@@ -1,0 +1,31 @@
+{
+  "parent": "recipes/root",
+  "criteria": {
+    "paper": {
+      "conditions": {
+        "items": [{
+          "items": [
+            "paper"
+          ]
+        }]
+      },
+      "trigger": "inventory_changed"
+    },
+    "recipe": {
+      "conditions": {
+        "recipe": "foxbox:foxbox"
+      },
+      "trigger": "recipe_unlocked"
+    }
+  },
+  "requirements": [[
+    "paper",
+    "recipe"
+  ]],
+  "rewards": {
+    "recipes": [
+      "foxbox:foxbox"
+    ]
+  },
+  "sends_telemetry_event": false
+}
