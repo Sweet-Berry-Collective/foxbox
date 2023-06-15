@@ -6,7 +6,7 @@
 		"version": "${version}",
 		"metadata": {
 			"name": "foxbox",
-			"description": "Foxes like to sit in boxes.",
+			"description": "Foxes like to sit in boxes!",
 			"contributors": {
 				"Octal": "Owner"
 			},
@@ -15,7 +15,8 @@
 				"issues": "https://github.com/Sweet-Berry-Collective/foxbox/issues",
 				"sources": "https://github.com/Sweet-Berry-Collective/foxbox"
 			},
-			"icon": "assets/foxbox/icon.png"
+			"icon": "assets/foxbox/icon.png",
+			"license": "mpl-2.0"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
