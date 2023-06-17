@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "foxbox:block/tbh"
+    },
+    "facing=south": {
+      "model": "foxbox:block/tbh",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "foxbox:block/tbh",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "foxbox:block/tbh",
+      "y": 270
+    }
+  }
+}

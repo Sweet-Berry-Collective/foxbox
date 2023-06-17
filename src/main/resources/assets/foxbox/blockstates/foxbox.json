@@ -131,6 +131,52 @@
         "facing": "west",
         "right": true
       }
+    },
+
+
+    {
+      "apply": {
+        "model": "foxbox:block/tbh_box",
+        "uvlock": false,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "tbh": true
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/tbh_box",
+        "uvlock": false,
+        "y": 0
+      },
+      "when": {
+        "facing": "south",
+        "tbh": true
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/tbh_box",
+        "uvlock": false,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "tbh": true
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/tbh_box",
+        "uvlock": false,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "tbh": true
+      }
     }
   ]
 }

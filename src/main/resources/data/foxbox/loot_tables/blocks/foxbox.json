@@ -1,0 +1,15 @@
+{
+  "type": "block",
+  "random_sequence": "foxbox:foxbox",
+  "pools": [{
+    "rolls": 1,
+    "bonus_rolls": 0,
+    "conditions": [{
+      "condition": "survives_explosion"
+    }],
+    "entries": [{
+      "type": "item",
+      "name": "foxbox:foxbox"
+    }]
+  }]
+}

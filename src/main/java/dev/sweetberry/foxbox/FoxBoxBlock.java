@@ -1,13 +1,21 @@
 package dev.sweetberry.foxbox;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -17,38 +25,53 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoxBoxBlock extends HorizontalFacingBlock {
-	public static final VoxelShape OUTLINE = VoxelShapes.union(
+	public static final VoxelShape outline = VoxelShapes.union(
 		createCuboidShape(0.1, 0, 0.1, 15.9,  0.1, 15.9),
 		createCuboidShape(0, 0, 0, 16,  16, 0.1),
 		createCuboidShape(0, 0, 0, 0.1,  16, 16),
 		createCuboidShape(0, 0, 15.9, 16,  16, 16),
 		createCuboidShape(15.9, 0, 0, 16,  16, 16)
 	);
-	public static final VoxelShape COLLISION = VoxelShapes.union(
+	public static final VoxelShape collision = VoxelShapes.union(
 		createCuboidShape(0.1, 0, 0.1, 15.9,  6, 15.9),
 		createCuboidShape(0, 0, 0, 16,  16, 0.1),
 		createCuboidShape(0, 0, 0, 0.1,  16, 16),
 		createCuboidShape(0, 0, 15.9, 16,  16, 16),
 		createCuboidShape(15.9, 0, 0, 16,  16, 16)
 	);
+	public static final VoxelShape tbh_collision = FoxBoxMod.forwards(FoxBoxMod.upwards(TbhBlock.shape, 11), 3);
 
-	public static final BooleanProperty LEFT = BooleanProperty.of("left");
+	public static final BooleanProperty left = BooleanProperty.of("left");
 
-	public static final BooleanProperty RIGHT = BooleanProperty.of("right");
+	public static final BooleanProperty right = BooleanProperty.of("right");
+	public static final BooleanProperty tbh = BooleanProperty.of("tbh");
 
 	public FoxBoxBlock(Settings settings) {
 		super(settings);
+		setDefaultState(getDefaultState().with(tbh, false));
 	}
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return OUTLINE;
+		if (state.get(tbh))
+			return VoxelShapes.union(outline, FoxBoxMod.rotate(tbh_collision, state.get(FACING).getOpposite()));
+		return outline;
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return COLLISION;
+		if (state.get(tbh))
+			return VoxelShapes.union(collision, FoxBoxMod.rotate(tbh_collision, state.get(FACING).getOpposite()));
+		return collision;
+	}
+
+	@Override
+	public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
+		return collision;
 	}
 
 	@Override
@@ -58,14 +81,18 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, LEFT, RIGHT);
+		builder.add(FACING, left, right, tbh);
 	}
 
 	public BlockState getSideState(BlockState state, BlockPos pos, Direction dir, WorldAccess world) {
-		var left = dir.rotateYCounterclockwise();
-		var right = dir.rotateYClockwise();
+		var left_dir = dir.rotateYCounterclockwise();
+		var left_pos = pos.offset(left_dir);
+		var right_dir = dir.rotateYClockwise();
+		var right_pos = pos.offset(right_dir);
+		var left = world.getBlockState(left_pos).isSideSolidFullSquare(world, left_pos, right_dir);
+		var right = world.getBlockState(right_pos).isSideSolidFullSquare(world, right_pos, left_dir);
 
-		return state.with(LEFT, world.isAir(pos.offset(left))).with(RIGHT, world.isAir(pos.offset(right)));
+		return state.with(FoxBoxBlock.left, !left).with(FoxBoxBlock.right, !right);
 	}
 
 	@Nullable
@@ -81,5 +108,52 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		return getSideState(state, pos, state.get(FACING), world);
+	}
+
+	@Override
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+		var stacks = new ArrayList<>(super.getDroppedStacks(state, builder));
+
+		if (state.get(tbh))
+			stacks.add(FoxBoxMod.tbh_item.getDefaultStack());
+
+		return stacks;
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (!player.canModifyBlocks()) return ActionResult.PASS;
+		if (state.get(tbh)) return tryRemoveTbh(state, world, pos, player, hand, hit);
+		return trySetTbh(state, world, pos, player, hand, hit);
+	}
+
+	public ActionResult trySetTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		var stack = player.getStackInHand(hand);
+		if (!stack.isOf(FoxBoxMod.tbh_item)) return ActionResult.PASS;
+
+		stack.decrement(1);
+		player.setStackInHand(hand, stack);
+
+		world.setBlockState(pos, state.with(tbh, true));
+
+		world.playSound(pos, SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+
+		return ActionResult.SUCCESS;
+	}
+
+	public ActionResult tryRemoveTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (!player.getStackInHand(hand).isEmpty()) return ActionResult.PASS;
+		if (!player.isSneaking()) return ActionResult.PASS;
+
+		world.setBlockState(pos, state.with(tbh, false));
+
+		if (!player.isCreative()) {
+			var realPos = pos.ofCenter().add(0, 0.5, 0);
+			var item = new ItemEntity(world, realPos.x, realPos.y, realPos.z, FoxBoxMod.tbh_item.getDefaultStack());
+			world.spawnEntity(item);
+		}
+
+		world.playSound(pos, SoundEvents.BLOCK_WOOL_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+		return ActionResult.SUCCESS;
 	}
 }

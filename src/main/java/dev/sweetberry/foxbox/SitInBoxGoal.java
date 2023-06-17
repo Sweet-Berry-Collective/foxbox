@@ -32,7 +32,8 @@ public class SitInBoxGoal extends MoveToTargetPosGoal {
 
 	@Override
 	protected boolean isTargetPos(WorldView world, BlockPos pos) {
-		return world.getBlockState(pos).isOf(FoxBoxMod.foxbox_block);
+		var state = world.getBlockState(pos);
+		return state.isOf(FoxBoxMod.foxbox_block) && !state.get(FoxBoxBlock.tbh);
 	}
 
 	@Override

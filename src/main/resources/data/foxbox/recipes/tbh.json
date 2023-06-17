@@ -1,0 +1,21 @@
+{
+  "type": "crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "white_wool"
+    },
+    "*": {
+      "tag": "buttons"
+    }
+  },
+  "pattern": [
+    "*  ",
+    "###",
+    "# #"
+  ],
+  "result": {
+    "item": "foxbox:tbh"
+  },
+  "show_notification": true
+}
