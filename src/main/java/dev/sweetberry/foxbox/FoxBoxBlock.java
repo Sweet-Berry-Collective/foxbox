@@ -131,8 +131,10 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 		var stack = player.getStackInHand(hand);
 		if (!stack.isOf(FoxBoxMod.tbh_item)) return ActionResult.PASS;
 
-		stack.decrement(1);
-		player.setStackInHand(hand, stack);
+		if (!player.isCreative()) {
+			stack.decrement(1);
+			player.setStackInHand(hand, stack);
+		}
 
 		world.setBlockState(pos, state.with(tbh, true));
 

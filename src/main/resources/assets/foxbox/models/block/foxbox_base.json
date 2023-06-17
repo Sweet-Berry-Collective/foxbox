@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "front": "foxbox:block/foxbox_front",
+    "side": "foxbox:block/foxbox_side",
+    "bottom": "foxbox:block/foxbox_bottom",
+    "back": "foxbox:block/foxbox_back",
+    "flap_top": "foxbox:block/foxbox_flap_top",
+    "flap_bottom": "foxbox:block/foxbox_flap_bottom",
+    "particle": "foxbox:block/foxbox_side"
+  }
+}

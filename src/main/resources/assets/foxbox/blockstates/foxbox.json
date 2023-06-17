@@ -90,6 +90,52 @@
 
     {
       "apply": {
+        "model": "foxbox:block/foxbox_flap_left_folded",
+        "uvlock": false,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "left": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_left_folded",
+        "uvlock": false,
+        "y": 0
+      },
+      "when": {
+        "facing": "south",
+        "left": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_left_folded",
+        "uvlock": false,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "left": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_left_folded",
+        "uvlock": false,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "left": false
+      }
+    },
+
+
+    {
+      "apply": {
         "model": "foxbox:block/foxbox_flap_right",
         "uvlock": false,
         "y": 180
@@ -130,6 +176,52 @@
       "when": {
         "facing": "west",
         "right": true
+      }
+    },
+
+
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_right_folded",
+        "uvlock": false,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "right": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_right_folded",
+        "uvlock": false,
+        "y": 0
+      },
+      "when": {
+        "facing": "south",
+        "right": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_right_folded",
+        "uvlock": false,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "right": false
+      }
+    },
+    {
+      "apply": {
+        "model": "foxbox:block/foxbox_flap_right_folded",
+        "uvlock": false,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "right": false
       }
     },
 

@@ -20,7 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.sweetberry.foxbox.FoxBoxMod"
+			"init": "dev.sweetberry.foxbox.FoxBoxMod",
+			"client_init": "dev.sweetberry.foxbox.FoxBoxClient"
 		},
 		"depends": [
 			{
