@@ -7,9 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -144,8 +142,10 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 	}
 
 	public ActionResult tryRemoveTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!player.getStackInHand(hand).isEmpty()) return ActionResult.PASS;
-		if (!player.isSneaking()) return ActionResult.PASS;
+		if (!player.getStackInHand(hand).isEmpty() || !player.isSneaking()) {
+			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), pos);
+			return ActionResult.SUCCESS;
+		}
 
 		world.setBlockState(pos, state.with(tbh, false));
 

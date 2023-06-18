@@ -1,7 +1,6 @@
 package dev.sweetberry.foxbox;
 
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.sound.SoundEvents;

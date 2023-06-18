@@ -1,10 +1,14 @@
 package dev.sweetberry.foxbox;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -34,9 +38,15 @@ public class FoxBoxMod implements ModInitializer {
 		new QuiltItemSettings()
 	);
 
+	public static final DefaultParticleType confetti = FabricParticleTypes.simple();
+	public static final Identifier yippee_id = new Identifier("foxbox:yippee");
+	public static final SoundEvent yippee = SoundEvent.createVariableRangeEvent(yippee_id);
+
 	@Override
 	public void onInitialize(ModContainer mod) {
-		var id = new Identifier("foxbox:foxbox");
+		Identifier id;
+
+		id = new Identifier("foxbox:foxbox");
 
 		Registry.register(Registries.BLOCK, id, foxbox_block);
 		Registry.register(Registries.ITEM, id, foxbox_item);
@@ -45,6 +55,14 @@ public class FoxBoxMod implements ModInitializer {
 
 		Registry.register(Registries.BLOCK, id, tbh_block);
 		Registry.register(Registries.ITEM, id, tbh_item);
+
+		Registry.register(
+			Registries.PARTICLE_TYPE,
+			new Identifier("foxbox", "confetti"),
+			confetti
+		);
+
+		Registry.register(Registries.SOUND_EVENT, yippee_id, yippee);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addAfter(Items.BEEHIVE, foxbox_item, tbh_item));
 	}

@@ -5,15 +5,24 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equippable;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 	public static final VoxelShape shape = VoxelShapes.union(
@@ -54,5 +63,27 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 	@Override
 	public EquipmentSlot getPreferredSlot() {
 		return EquipmentSlot.HEAD;
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (player.shouldCancelInteraction())
+			return ActionResult.PASS;
+
+		yippee(world, pos.ofCenter().add(0, 0.25, 0), pos);
+
+		return ActionResult.SUCCESS;
+	}
+
+	public static void yippee(World world, Vec3d vec, BlockPos pos) {
+		var random = world.getRandom();
+		int count = random.range(10, 25);
+		for (int i = 0; i < count; i++) {
+			var randx = random.nextFloat() * 0.25 - 0.125;
+			var randz = random.nextFloat() * 0.25 - 0.125;
+			world.addParticle(FoxBoxMod.confetti, vec.x + randx, vec.y, vec.z + randz, 0, 0, 0);
+		}
+
+		world.playSound(pos, FoxBoxMod.yippee, SoundCategory.BLOCKS, 1, 1, false);
 	}
 }
