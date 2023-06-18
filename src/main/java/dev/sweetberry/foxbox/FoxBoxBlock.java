@@ -15,6 +15,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -120,14 +121,32 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!player.canModifyBlocks()) return ActionResult.PASS;
-		if (state.get(tbh)) return tryRemoveTbh(state, world, pos, player, hand, hit);
-		return trySetTbh(state, world, pos, player, hand, hit);
+		if (state.get(tbh)) return interactWithTbh(state, world, pos, player, hand, hit);
+		return interact(state, world, pos, player, hand, hit);
 	}
 
-	public ActionResult trySetTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult interact(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var stack = player.getStackInHand(hand);
+
+		for (var sitting_player : world.getNonSpectatingEntities(PlayerEntity.class, new Box(pos)))
+			if (sitting_player.hasVehicle())
+				if (sitting_player.getVehicle() instanceof FoxBoxSeatEntity)
+					return ActionResult.PASS;
+
+		if (stack.isEmpty() && !state.get(tbh)) {
+			var seat = FoxBoxMod.foxbox_seat.create(world);
+			if (seat == null)
+				return ActionResult.PASS;
+			seat.setPosition(pos.getX() + .5f, pos.getY() + (6f/16f), pos.getZ() + .5f);
+			world.spawnEntity(seat);
+			player.startRiding(seat, true);
+
+			return ActionResult.SUCCESS;
+		}
+
 		if (!stack.isOf(FoxBoxMod.tbh_item)) return ActionResult.PASS;
+
+		if (!player.canModifyBlocks()) return ActionResult.PASS;
 
 		if (!player.isCreative()) {
 			stack.decrement(1);
@@ -141,11 +160,13 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 		return ActionResult.SUCCESS;
 	}
 
-	public ActionResult tryRemoveTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult interactWithTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty() || !player.isSneaking()) {
 			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), pos);
 			return ActionResult.SUCCESS;
 		}
+
+		if (!player.canModifyBlocks()) return ActionResult.PASS;
 
 		world.setBlockState(pos, state.with(tbh, false));
 

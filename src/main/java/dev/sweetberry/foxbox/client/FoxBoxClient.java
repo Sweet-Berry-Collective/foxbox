@@ -2,6 +2,7 @@ package dev.sweetberry.foxbox.client;
 
 import dev.sweetberry.foxbox.FoxBoxMod;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.particle.FireSmokeParticle;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.entity.TntEntity;
@@ -23,5 +24,7 @@ public class FoxBoxClient implements ClientModInitializer {
 		);
 
 		ParticleFactoryRegistry.getInstance().register(FoxBoxMod.confetti, ConfettiParticle.Factory::new);
+
+		EntityRendererRegistry.register(FoxBoxMod.foxbox_seat, FoxBoxSeatEntityRenderer::new);
 	}
 }

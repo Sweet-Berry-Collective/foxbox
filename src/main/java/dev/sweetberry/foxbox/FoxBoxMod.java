@@ -3,6 +3,8 @@ package dev.sweetberry.foxbox;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleType;
@@ -16,6 +18,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
+import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.ArrayList;
@@ -28,6 +31,12 @@ public class FoxBoxMod implements ModInitializer {
 		foxbox_block,
 		new QuiltItemSettings()
 	);
+	public static final EntityType<FoxBoxSeatEntity> foxbox_seat = QuiltEntityTypeBuilder
+		.create(SpawnGroup.MISC, FoxBoxSeatEntity::new)
+		.disableSaving()
+		.disableSummon()
+		.maxChunkTrackingRange(10)
+		.build();
 
 	public static final TbhBlock tbh_block = new TbhBlock(
 		QuiltBlockSettings.copyOf(Blocks.WHITE_WOOL).breakInstantly()
@@ -50,6 +59,8 @@ public class FoxBoxMod implements ModInitializer {
 
 		Registry.register(Registries.BLOCK, id, foxbox_block);
 		Registry.register(Registries.ITEM, id, foxbox_item);
+
+		Registry.register(Registries.ENTITY_TYPE, new Identifier("foxbox:foxbox_seat"), foxbox_seat);
 
 		id = new Identifier("foxbox:tbh");
 
