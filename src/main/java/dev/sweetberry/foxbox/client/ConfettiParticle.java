@@ -39,7 +39,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
 	@Override
 	public void setSpriteForAge(SpriteProvider spriteProvider) {
 		if (!this.dead) {
-			this.setSprite(spriteProvider.getSprite(texture_type, 7));
+			this.setSprite(spriteProvider.getSprite(texture_type, 14));
 		}
 	}
 
