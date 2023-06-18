@@ -15,7 +15,7 @@ public class ConfettiParticle extends SpriteBillboardParticle {
 		velocityY = random.nextFloat()*2+2;
 		velocityX = (random.nextFloat()-0.5)*0.5;
 		velocityZ = (random.nextFloat()-0.5)*0.5;
-		texture_type = clientWorld.getRandom().range(0, 7);
+		texture_type = clientWorld.getRandom().range(0, 14);
 		scale = random.nextFloat();
 		vel_add = random.nextFloat()*0.5f;
 	}
