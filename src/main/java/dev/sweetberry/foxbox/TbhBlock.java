@@ -8,7 +8,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equippable;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
@@ -22,7 +21,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 	public static final VoxelShape shape = VoxelShapes.union(

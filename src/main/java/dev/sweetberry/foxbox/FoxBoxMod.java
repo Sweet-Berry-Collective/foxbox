@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;

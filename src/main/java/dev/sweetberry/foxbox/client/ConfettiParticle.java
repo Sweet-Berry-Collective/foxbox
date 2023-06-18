@@ -4,7 +4,6 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.random.RandomGenerator;
 
 public class ConfettiParticle extends SpriteBillboardParticle {
 	public final int texture_type;
