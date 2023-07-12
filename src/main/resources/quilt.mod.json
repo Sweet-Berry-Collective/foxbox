@@ -26,7 +26,7 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.18.10"
+				"versions": "<=0.19.x"
 			},
 			{
 				"id": "quilted_fabric_api",

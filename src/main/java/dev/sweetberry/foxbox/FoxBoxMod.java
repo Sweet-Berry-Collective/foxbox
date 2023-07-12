@@ -1,8 +1,11 @@
 package dev.sweetberry.foxbox;
 
+import com.mojang.blaze3d.platform.InputUtil;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.option.KeyBind;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
@@ -14,11 +17,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+import org.lwjgl.glfw.GLFW;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
+import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
 import java.util.ArrayList;
 
@@ -52,6 +57,8 @@ public class FoxBoxMod implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
+		FoxBoxConfig.poke();
+
 		Identifier id;
 
 		id = new Identifier("foxbox:foxbox");
@@ -75,6 +82,15 @@ public class FoxBoxMod implements ModInitializer {
 		Registry.register(Registries.SOUND_EVENT, yippee_id, yippee);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addAfter(Items.BEEHIVE, foxbox_item, tbh_item));
+
+		ServerPlayNetworking.registerGlobalReceiver(FoxBoxNetworking.yippee_id, ((server, player, handler, buf, responseSender) -> {
+			var packet = FoxBoxNetworking.YippeePacket.read(buf);
+			if (packet.player == player.getUuid())
+				return;
+			server.execute(() -> {
+				FoxBoxNetworking.sendYippeeToClients(player.getServerWorld(), packet);
+			});
+		}));
 	}
 
 	public static VoxelShape rotate(VoxelShape shape, Direction dir) {

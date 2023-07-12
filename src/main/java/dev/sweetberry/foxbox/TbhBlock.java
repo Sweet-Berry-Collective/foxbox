@@ -8,6 +8,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equippable;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
@@ -68,12 +69,17 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 		if (player.shouldCancelInteraction())
 			return ActionResult.PASS;
 
-		yippee(world, pos.ofCenter().add(0, 0.25, 0), pos);
+		if (world instanceof ServerWorld serverWorld) {
+			FoxBoxNetworking.sendYippeeToClients(serverWorld, new FoxBoxNetworking.YippeePacket(player, pos));
+			return ActionResult.SUCCESS;
+		}
+
+		yippee(world, pos.ofCenter().add(0, 0.25, 0), pos, FoxBoxConfig.tbh_volume(false));
 
 		return ActionResult.SUCCESS;
 	}
 
-	public static void yippee(World world, Vec3d vec, BlockPos pos) {
+	public static void yippee(World world, Vec3d vec, BlockPos pos, float volume) {
 		var random = world.getRandom();
 		int count = random.range(10, 25);
 		for (int i = 0; i < count; i++) {
@@ -82,6 +88,6 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 			world.addParticle(FoxBoxMod.confetti, vec.x + randx, vec.y, vec.z + randz, 0, 0, 0);
 		}
 
-		world.playSound(pos, FoxBoxMod.yippee, SoundCategory.BLOCKS, 1, 1, false);
+		world.playSound(pos, FoxBoxMod.yippee, SoundCategory.BLOCKS, volume, 1, false);
 	}
 }

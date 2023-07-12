@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -162,7 +163,12 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 
 	public ActionResult interactWithTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty() || !player.isSneaking()) {
-			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), pos);
+			if (world instanceof ServerWorld serverWorld) {
+				FoxBoxNetworking.sendYippeeToClients(serverWorld, new FoxBoxNetworking.YippeePacket(player, pos, true));
+				return ActionResult.SUCCESS;
+			}
+
+			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), pos, FoxBoxConfig.tbh_volume(false));
 			return ActionResult.SUCCESS;
 		}
 
