@@ -41,7 +41,7 @@ public class FoxBoxClient implements ClientModInitializer {
 			var main = client.player.getStackInHand(Hand.MAIN_HAND).isOf(FoxBoxMod.tbh_item);
 			var off = client.player.getStackInHand(Hand.OFF_HAND).isOf(FoxBoxMod.tbh_item);
 			var head = client.player.getEquippedStack(EquipmentSlot.HEAD).isOf(FoxBoxMod.tbh_item);
-			if (FoxBoxConfig.instance.tbh.yippee_needs_tbh && !main && !off && !head)
+			if (FoxBoxConfig.instance.tbh.yippee_needs_tbh.value() && !main && !off && !head)
 				return;
 			TbhBlock.yippee(client.world, client.player.getEyePos(), client.player.getBlockPos(), FoxBoxConfig.tbh_volume(false));
 			var buf = PacketByteBufs.create();

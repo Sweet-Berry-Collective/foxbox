@@ -1,24 +1,13 @@
 package dev.sweetberry.foxbox;
 
-import org.quiltmc.config.api.Config;
-import org.quiltmc.config.api.ConfigEnvironment;
+import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.WrappedConfig;
 import org.quiltmc.config.api.annotations.Comment;
-import org.quiltmc.loader.api.QuiltLoader;
-import org.quiltmc.loader.impl.config.Json5Serializer;
+import org.quiltmc.config.api.values.TrackedValue;
+import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
-public final class FoxBoxConfig extends WrappedConfig {
-	public static final ConfigEnvironment env = new ConfigEnvironment(
-		QuiltLoader.getConfigDir(),
-		Json5Serializer.INSTANCE
-	);
-	public static final FoxBoxConfig instance = Config.create(
-		env,
-		"foxbox",
-		"foxbox",
-		FoxBoxConfig.class,
-		builder -> builder.format("json5")
-	);
+public final class FoxBoxConfig extends ReflectiveConfig {
+	public static final FoxBoxConfig instance = QuiltConfig.create("foxbox", "foxbox", FoxBoxConfig.class);
 
 	public final TbhConfig tbh = new TbhConfig();
 
@@ -26,16 +15,16 @@ public final class FoxBoxConfig extends WrappedConfig {
 
 	public static float tbh_volume(boolean global) {
 		if (global)
-			return instance.tbh.tbh_global_volume;
-		return instance.tbh.tbh_local_volume;
+			return instance.tbh.tbh_global_volume.value();
+		return instance.tbh.tbh_local_volume.value();
 	}
 
-	public static final class TbhConfig implements Section {
+	public static final class TbhConfig extends Section {
 		@Comment("Volume for TBH when you activate it")
-		public final float tbh_local_volume = 1;
+		public final TrackedValue<Float> tbh_local_volume = value(1.0f);
 		@Comment("Volume for TBH when others it")
-		public final float tbh_global_volume = 1;
+		public final TrackedValue<Float> tbh_global_volume = value(1.0f);
 		@Comment("Requires you to hold a TBH to yippee")
-		public final boolean yippee_needs_tbh = true;
+		public final TrackedValue<Boolean> yippee_needs_tbh = value(true);
 	}
 }
