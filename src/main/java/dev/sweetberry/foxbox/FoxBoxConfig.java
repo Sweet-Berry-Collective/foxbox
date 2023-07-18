@@ -1,13 +1,13 @@
 package dev.sweetberry.foxbox;
 
+import dev.sweetberry.liberry.config.ConfigHelper;
+import net.minecraft.util.Identifier;
 import org.quiltmc.config.api.ReflectiveConfig;
-import org.quiltmc.config.api.WrappedConfig;
 import org.quiltmc.config.api.annotations.Comment;
 import org.quiltmc.config.api.values.TrackedValue;
-import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public final class FoxBoxConfig extends ReflectiveConfig {
-	public static final FoxBoxConfig instance = QuiltConfig.create("foxbox", "foxbox", FoxBoxConfig.class);
+	public static final FoxBoxConfig instance = ConfigHelper.create(new Identifier("foxbox", "foxbox"), FoxBoxConfig.class);
 
 	public final TbhConfig tbh = new TbhConfig();
 

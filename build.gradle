@@ -11,12 +11,19 @@ loom {
 	accessWidenerPath = file("src/main/resources/foxbox.accesswidener")
 }
 
+repositories {
+	maven {
+		url = "https://maven.proxyfox.dev/"
+	}
+}
+
 dependencies {
 	minecraft libs.minecraft
 	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
+	modImplementation include("dev.sweetberry:liberry:0.1.0+1.20.1")
 }
 
 processResources {
