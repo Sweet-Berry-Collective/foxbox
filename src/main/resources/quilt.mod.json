@@ -33,6 +33,10 @@
 				"versions": ">=7.0.0"
 			},
 			{
+				"id": "liberry",
+				"versions": "*"
+			},
+			{
 				"id": "minecraft",
 				"versions": ">=1.20"
 			}
