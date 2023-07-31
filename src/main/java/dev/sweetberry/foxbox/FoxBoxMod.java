@@ -1,33 +1,40 @@
 package dev.sweetberry.foxbox;
 
-import com.mojang.blaze3d.platform.InputUtil;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.option.KeyBind;
+import net.minecraft.command.CommandBuildContext;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import org.lwjgl.glfw.GLFW;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
+import org.quiltmc.qsl.command.api.CommandRegistrationCallback;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
 import java.util.ArrayList;
 
-public class FoxBoxMod implements ModInitializer {
+public class FoxBoxMod implements ModInitializer, CommandRegistrationCallback {
 	public static final FoxBoxBlock foxbox_block = new FoxBoxBlock(
 		QuiltBlockSettings.copyOf(Blocks.OAK_PLANKS).breakInstantly()
 	);
@@ -85,12 +92,15 @@ public class FoxBoxMod implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(FoxBoxNetworking.yippee_id, ((server, player, handler, buf, responseSender) -> {
 			var packet = FoxBoxNetworking.YippeePacket.read(buf);
-			if (packet.player == player.getUuid())
+			var main = player.getStackInHand(Hand.MAIN_HAND).isOf(FoxBoxMod.tbh_item);
+			var off = player.getStackInHand(Hand.OFF_HAND).isOf(FoxBoxMod.tbh_item);
+			var head = player.getEquippedStack(EquipmentSlot.HEAD).isOf(FoxBoxMod.tbh_item);
+			if (FoxBoxConfig.instance.tbh.yippee_needs_tbh.value() && !main && !off && !head)
 				return;
-			server.execute(() -> {
-				FoxBoxNetworking.sendYippeeToClients(player.getServerWorld(), packet);
-			});
+			server.execute(() -> FoxBoxNetworking.sendYippeeToClients(player.getServerWorld(), packet));
 		}));
+
+		CommandRegistrationCallback.EVENT.register(this);
 	}
 
 	public static VoxelShape rotate(VoxelShape shape, Direction dir) {
@@ -120,5 +130,18 @@ public class FoxBoxMod implements ModInitializer {
 		shape.forEachBox((x1, y1, z1, x2, y2, z2) -> shapes.add(VoxelShapes.cuboid(x1, y1, z1-(amount/16), x2, y2, z2-(amount/16))));
 
 		return VoxelShapes.union(VoxelShapes.empty(), shapes.toArray(new VoxelShape[]{}));
+	}
+
+	@Override
+	public void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
+		dispatcher.register(CommandManager.literal("foxbox").then(CommandManager.literal("tbh:require").requires(it -> it.hasPermissionLevel(2)).then(CommandManager.argument("require", BoolArgumentType.bool()).executes(FoxBoxMod::tbhRequire))));
+	}
+
+	public static int tbhRequire(CommandContext<ServerCommandSource> ctx) {
+		boolean require = ctx.getArgument("require", Boolean.class);
+
+		FoxBoxConfig.instance.tbh.yippee_needs_tbh.setValue(require, true);
+
+		return 1;
 	}
 }

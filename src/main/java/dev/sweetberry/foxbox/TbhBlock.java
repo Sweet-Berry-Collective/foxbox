@@ -71,15 +71,12 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 
 		if (world instanceof ServerWorld serverWorld) {
 			FoxBoxNetworking.sendYippeeToClients(serverWorld, new FoxBoxNetworking.YippeePacket(player, pos));
-			return ActionResult.SUCCESS;
 		}
-
-		yippee(world, pos.ofCenter().add(0, 0.25, 0), pos, FoxBoxConfig.tbh_volume(false));
 
 		return ActionResult.SUCCESS;
 	}
 
-	public static void yippee(World world, Vec3d vec, BlockPos pos, float volume) {
+	public static void yippee(World world, Vec3d vec, float volume) {
 		var random = world.getRandom();
 		int count = random.range(10, 25);
 		for (int i = 0; i < count; i++) {
@@ -88,6 +85,6 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 			world.addParticle(FoxBoxMod.confetti, vec.x + randx, vec.y, vec.z + randz, 0, 0, 0);
 		}
 
-		world.playSound(pos, FoxBoxMod.yippee, SoundCategory.BLOCKS, volume, 1, false);
+		world.playSound(vec.x, vec.y, vec.z, FoxBoxMod.yippee, SoundCategory.BLOCKS, volume, 1, false);
 	}
 }

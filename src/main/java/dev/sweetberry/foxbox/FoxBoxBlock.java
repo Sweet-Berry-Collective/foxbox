@@ -168,7 +168,7 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 				return ActionResult.SUCCESS;
 			}
 
-			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), pos, FoxBoxConfig.tbh_volume(false));
+			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), FoxBoxConfig.tbh_volume(false));
 			return ActionResult.SUCCESS;
 		}
 

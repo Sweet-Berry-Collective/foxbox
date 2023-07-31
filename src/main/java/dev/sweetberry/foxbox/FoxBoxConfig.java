@@ -20,11 +20,20 @@ public final class FoxBoxConfig extends ReflectiveConfig {
 	}
 
 	public static final class TbhConfig extends Section {
-		@Comment("Volume for TBH when you activate it")
+		@Comment({
+			"Volume for TBH when you activate it",
+			"Client authoritative"
+		})
 		public final TrackedValue<Float> tbh_local_volume = value(1.0f);
-		@Comment("Volume for TBH when others it")
+		@Comment({
+			"Volume for TBH when others it",
+			"Client authoritative"
+		})
 		public final TrackedValue<Float> tbh_global_volume = value(1.0f);
-		@Comment("Requires you to hold a TBH to yippee")
+		@Comment({
+			"Requires you to hold a TBH to yippee",
+			"Server authoritative"
+		})
 		public final TrackedValue<Boolean> yippee_needs_tbh = value(true);
 	}
 }

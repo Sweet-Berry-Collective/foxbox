@@ -16,8 +16,6 @@ public class FoxBoxNetworking {
 
 	public static void sendYippeeToClients(ServerWorld world, YippeePacket packet) {
 		world.getPlayers().forEach(player -> {
-			if (player.getUuid() == packet.player)
-				return;
 			var buf = PacketByteBufs.create();
 			packet.write(buf);
 			ServerPlayNetworking.send(player, yippee_id, buf);
@@ -43,7 +41,6 @@ public class FoxBoxNetworking {
 
 		public YippeePacket(PlayerEntity player, BlockPos pos) {
 			this(player, pos, false);
-
 		}
 
 		public void write(PacketByteBuf buf) {
