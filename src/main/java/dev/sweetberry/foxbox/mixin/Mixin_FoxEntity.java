@@ -1,6 +1,6 @@
 package dev.sweetberry.foxbox.mixin;
 
-import dev.sweetberry.foxbox.SitInBoxGoal;
+import dev.sweetberry.foxbox.content.SitInBoxGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.FoxEntity;

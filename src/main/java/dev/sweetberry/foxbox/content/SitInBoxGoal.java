@@ -1,5 +1,7 @@
-package dev.sweetberry.foxbox;
+package dev.sweetberry.foxbox.content;
 
+import dev.sweetberry.foxbox.FoxBoxMod;
+import dev.sweetberry.foxbox.content.block.FoxBoxBlock;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.passive.FoxEntity;

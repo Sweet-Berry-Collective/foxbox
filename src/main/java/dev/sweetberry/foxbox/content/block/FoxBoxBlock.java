@@ -1,5 +1,9 @@
-package dev.sweetberry.foxbox;
+package dev.sweetberry.foxbox.content.block;
 
+import dev.sweetberry.foxbox.FoxBoxConfig;
+import dev.sweetberry.foxbox.FoxBoxMod;
+import dev.sweetberry.foxbox.FoxBoxNetworking;
+import dev.sweetberry.foxbox.content.FoxBoxSeatEntity;
 import net.minecraft.block.*;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
@@ -46,7 +50,6 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 	public static final VoxelShape tbh_collision = FoxBoxMod.forwards(FoxBoxMod.upwards(TbhBlock.shape, 11), 3);
 
 	public static final BooleanProperty left = BooleanProperty.of("left");
-
 	public static final BooleanProperty right = BooleanProperty.of("right");
 	public static final BooleanProperty tbh = BooleanProperty.of("tbh");
 

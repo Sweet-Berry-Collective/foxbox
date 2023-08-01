@@ -1,6 +1,6 @@
 package dev.sweetberry.foxbox.client;
 
-import dev.sweetberry.foxbox.FoxBoxSeatEntity;
+import dev.sweetberry.foxbox.content.FoxBoxSeatEntity;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "foxbox:snow_fox_plushie"
+    },
+    {
+      "item": "orange_dye"
+    }
+  ],
+  "result": {
+    "item": "foxbox:fox_plushie"
+  },
+  "show_notification": true
+}

@@ -1,5 +1,7 @@
-package dev.sweetberry.foxbox;
+package dev.sweetberry.foxbox.content.block;
 
+import dev.sweetberry.foxbox.FoxBoxMod;
+import dev.sweetberry.foxbox.FoxBoxNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -38,7 +40,7 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 		createCuboidShape(4.5, 6, 1, 11.5, 13, 8)
 	);
 
-	protected TbhBlock(Settings settings) {
+	public TbhBlock(Settings settings) {
 		super(settings);
 		setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
 	}

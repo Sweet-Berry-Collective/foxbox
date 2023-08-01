@@ -2,9 +2,12 @@ package dev.sweetberry.foxbox;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import dev.sweetberry.foxbox.content.block.FoxBoxBlock;
+import dev.sweetberry.foxbox.content.FoxBoxSeatEntity;
+import dev.sweetberry.foxbox.content.block.TbhBlock;
+import dev.sweetberry.foxbox.content.item.PlushieBlockItem;
+import dev.sweetberry.foxbox.content.item.PlushieItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Blocks;
@@ -53,8 +56,15 @@ public class FoxBoxMod implements ModInitializer, CommandRegistrationCallback {
 		QuiltBlockSettings.copyOf(Blocks.WHITE_WOOL).breakInstantly()
 	);
 
-	public static final BlockItem tbh_item = new BlockItem(
+	public static final BlockItem tbh_item = new PlushieBlockItem(
 		tbh_block,
+		new QuiltItemSettings()
+	);
+
+	public static final Item fox_plushie = new PlushieItem(
+		new QuiltItemSettings()
+	);
+	public static final Item snow_fox_plushie = new PlushieItem(
 		new QuiltItemSettings()
 	);
 
@@ -80,6 +90,9 @@ public class FoxBoxMod implements ModInitializer, CommandRegistrationCallback {
 		Registry.register(Registries.BLOCK, id, tbh_block);
 		Registry.register(Registries.ITEM, id, tbh_item);
 
+		Registry.register(Registries.ITEM, new Identifier("foxbox:fox_plushie"), fox_plushie);
+		Registry.register(Registries.ITEM, new Identifier("foxbox:snow_fox_plushie"), snow_fox_plushie);
+
 		Registry.register(
 			Registries.PARTICLE_TYPE,
 			new Identifier("foxbox", "confetti"),
@@ -89,6 +102,7 @@ public class FoxBoxMod implements ModInitializer, CommandRegistrationCallback {
 		Registry.register(Registries.SOUND_EVENT, yippee_id, yippee);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addAfter(Items.BEEHIVE, foxbox_item, tbh_item));
+//		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> entries.addAfter());
 
 		ServerPlayNetworking.registerGlobalReceiver(FoxBoxNetworking.yippee_id, ((server, player, handler, buf, responseSender) -> {
 			var packet = FoxBoxNetworking.YippeePacket.read(buf);

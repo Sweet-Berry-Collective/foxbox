@@ -1,0 +1,21 @@
+{
+  "type": "crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "orange_wool"
+    },
+    "*": {
+      "tag": "buttons"
+    }
+  },
+  "pattern": [
+    "*",
+    "#",
+    "#"
+  ],
+  "result": {
+    "item": "foxbox:fox_plushie"
+  },
+  "show_notification": true
+}

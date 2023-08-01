@@ -1,0 +1,6 @@
+{
+  "parent": "foxbox:item/fox_plushie_base",
+  "textures": {
+    "fox": "foxbox:item/fox"
+  }
+}

@@ -6,7 +6,12 @@
   "mixins": [
     "Mixin_FoxEntity"
   ],
+  "client": [
+    "client.Mixin_BipedEntityModel",
+    "client.Mixin_HeldItemRenderer",
+    "client.Mixin_PlayerEntityRenderer"
+  ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }

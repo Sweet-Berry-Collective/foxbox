@@ -4,16 +4,14 @@
     "paper": {
       "conditions": {
         "items": [{
-          "items": [
-            "white_wool"
-          ]
+          "tag": "wool"
         }]
       },
       "trigger": "inventory_changed"
     },
     "recipe": {
       "conditions": {
-        "recipe": "foxbox:tbh"
+        "recipe": "foxbox:fox_plushie"
       },
       "trigger": "recipe_unlocked"
     }
@@ -23,7 +21,10 @@
   ]],
   "rewards": {
     "recipes": [
-      "foxbox:tbh"
+      "foxbox:fox_plushie_wool",
+      "foxbox:fox_plushie_dye",
+      "foxbox:snow_fox_plushie_wool",
+      "foxbox:snow_fox_plushie_dye"
     ]
   },
   "sends_telemetry_event": false

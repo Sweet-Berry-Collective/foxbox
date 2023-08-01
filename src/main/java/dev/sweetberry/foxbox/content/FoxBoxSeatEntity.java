@@ -1,5 +1,6 @@
-package dev.sweetberry.foxbox;
+package dev.sweetberry.foxbox.content;
 
+import dev.sweetberry.foxbox.FoxBoxMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
