@@ -102,7 +102,7 @@ public class FoxBoxMod implements ModInitializer, CommandRegistrationCallback {
 		Registry.register(Registries.SOUND_EVENT, yippee_id, yippee);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addAfter(Items.BEEHIVE, foxbox_item, tbh_item));
-//		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> entries.addAfter());
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> entries.addAfter(Items.MILK_BUCKET, tbh_item, fox_plushie, snow_fox_plushie));
 
 		ServerPlayNetworking.registerGlobalReceiver(FoxBoxNetworking.yippee_id, ((server, player, handler, buf, responseSender) -> {
 			var packet = FoxBoxNetworking.YippeePacket.read(buf);

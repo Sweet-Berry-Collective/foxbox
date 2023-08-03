@@ -166,12 +166,8 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 
 	public ActionResult interactWithTbh(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!player.getStackInHand(hand).isEmpty() || !player.isSneaking()) {
-			if (world instanceof ServerWorld serverWorld) {
+			if (world instanceof ServerWorld serverWorld)
 				FoxBoxNetworking.sendYippeeToClients(serverWorld, new FoxBoxNetworking.YippeePacket(player, pos, true));
-				return ActionResult.SUCCESS;
-			}
-
-			TbhBlock.yippee(world, pos.ofCenter().add(0, 1, 0), FoxBoxConfig.tbh_volume(false));
 			return ActionResult.SUCCESS;
 		}
 
