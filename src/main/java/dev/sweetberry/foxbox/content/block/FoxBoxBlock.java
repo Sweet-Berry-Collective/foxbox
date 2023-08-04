@@ -1,8 +1,8 @@
 package dev.sweetberry.foxbox.content.block;
 
-import dev.sweetberry.foxbox.FoxBoxConfig;
 import dev.sweetberry.foxbox.FoxBoxMod;
 import dev.sweetberry.foxbox.FoxBoxNetworking;
+import dev.sweetberry.foxbox.VoxelHelper;
 import dev.sweetberry.foxbox.content.FoxBoxSeatEntity;
 import net.minecraft.block.*;
 import net.minecraft.entity.ItemEntity;
@@ -40,6 +40,7 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 		createCuboidShape(0, 0, 15.9, 16,  16, 16),
 		createCuboidShape(15.9, 0, 0, 16,  16, 16)
 	);
+
 	public static final VoxelShape collision = VoxelShapes.union(
 		createCuboidShape(0.1, 0, 0.1, 15.9,  6, 15.9),
 		createCuboidShape(0, 0, 0, 16,  16, 0.1),
@@ -47,10 +48,16 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 		createCuboidShape(0, 0, 15.9, 16,  16, 16),
 		createCuboidShape(15.9, 0, 0, 16,  16, 16)
 	);
-	public static final VoxelShape tbh_collision = FoxBoxMod.forwards(FoxBoxMod.upwards(TbhBlock.shape, 11), 3);
+
+	public static final VoxelShape base_tbh_shape = VoxelHelper.forwards(VoxelHelper.upwards(TbhBlock.shape, 11), 3);
+
+	public static final VoxelShape[] tbh_outlines = VoxelHelper.generateShapes(base_tbh_shape, outline);
+	public static final VoxelShape[] tbh_collisions = VoxelHelper.generateShapes(base_tbh_shape, collision);
 
 	public static final BooleanProperty left = BooleanProperty.of("left");
+
 	public static final BooleanProperty right = BooleanProperty.of("right");
+
 	public static final BooleanProperty tbh = BooleanProperty.of("tbh");
 
 	public FoxBoxBlock(Settings settings) {
@@ -61,14 +68,14 @@ public class FoxBoxBlock extends HorizontalFacingBlock {
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		if (state.get(tbh))
-			return VoxelShapes.union(outline, FoxBoxMod.rotate(tbh_collision, state.get(FACING).getOpposite()));
+			return tbh_outlines[state.get(FACING).ordinal()];
 		return outline;
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		if (state.get(tbh))
-			return VoxelShapes.union(collision, FoxBoxMod.rotate(tbh_collision, state.get(FACING).getOpposite()));
+			return tbh_collisions[state.get(FACING).ordinal()];
 		return collision;
 	}
 

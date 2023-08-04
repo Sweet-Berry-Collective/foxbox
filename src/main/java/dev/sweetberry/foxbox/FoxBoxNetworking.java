@@ -11,7 +11,7 @@ import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
 import java.util.UUID;
 
-public class FoxBoxNetworking {
+public final class FoxBoxNetworking {
 	public static final Identifier yippee_id = new Identifier("foxbox", "yippee");
 
 	public static void sendYippeeToClients(ServerWorld world, YippeePacket packet) {

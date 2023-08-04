@@ -2,6 +2,7 @@ package dev.sweetberry.foxbox.content.block;
 
 import dev.sweetberry.foxbox.FoxBoxMod;
 import dev.sweetberry.foxbox.FoxBoxNetworking;
+import dev.sweetberry.foxbox.VoxelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -40,6 +41,9 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 		createCuboidShape(4.5, 6, 1, 11.5, 13, 8)
 	);
 
+	public static final VoxelShape[] shapes = VoxelHelper.generateShapes(shape, null);
+
+
 	public TbhBlock(Settings settings) {
 		super(settings);
 		setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
@@ -47,7 +51,7 @@ public class TbhBlock extends HorizontalFacingBlock implements Equippable {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return FoxBoxMod.rotate(shape, state.get(FACING));
+		return shapes[state.get(FACING).getOpposite().ordinal()];
 	}
 
 	@Override
