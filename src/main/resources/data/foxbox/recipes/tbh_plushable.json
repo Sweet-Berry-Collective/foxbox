@@ -1,0 +1,26 @@
+{
+  "type": "plushables:builder",
+  "ingredients": [
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:white_wool"
+    },
+    {
+      "item": "plushables:heart_of_gold"
+    }
+  ],
+  "output": {
+    "item": "foxbox:tbh",
+    "count": 1
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "plushables"
+      ]
+    }
+  ]
+}

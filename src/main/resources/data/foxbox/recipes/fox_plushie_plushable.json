@@ -1,0 +1,26 @@
+{
+  "type": "plushables:builder",
+  "ingredients": [
+    {
+      "tag": "buttons"
+    },
+    {
+      "item": "minecraft:orange_wool"
+    },
+    {
+      "item": "plushables:heart_of_gold"
+    }
+  ],
+  "output": {
+    "item": "foxbox:fox_plushie",
+    "count": 1
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "plushables"
+      ]
+    }
+  ]
+}
