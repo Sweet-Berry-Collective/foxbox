@@ -1,0 +1,18 @@
+{
+  "type": "plushables:builder",
+  "ingredients": [
+    {
+      "tag": "buttons"
+    },
+    {
+      "item": "minecraft:white_wool"
+    },
+    {
+      "item": "plushables:heart_of_gold"
+    }
+  ],
+  "output": {
+    "item": "foxbox:snow_fox_plushie",
+    "count": 1
+  }
+}

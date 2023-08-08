@@ -2,5 +2,7 @@
   "parent": "foxbox:item/fox_plushie_base",
   "textures": {
     "fox": "foxbox:item/snow_fox"
-  }
+  },
+  "gui_light": "front"
+
 }
